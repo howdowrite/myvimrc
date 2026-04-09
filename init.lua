@@ -1,5 +1,14 @@
-
 require("config.lazy")
+
+vim.opt.tabstop=4 -- how big should /t chars should be displayed
+vim.opt.shiftwidth=4 -- how big should >> be when used. Keep same size as above
+
+vim.opt.softtabstop=4
+vim.opt.autoindent=true
+vim.opt.expandtab=false
+vim.opt.wrap=false
+-- vim.cmd('colorscheme Habamax')
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 -- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -88,3 +97,26 @@ end, { desc = 'Print the git blame for the current line' })
 -- For example, to add the "nohlsearch" package to automatically turn off search highlighting after
 -- 'updatetime' and when going to insert mode
 vim.cmd('packadd! nohlsearch')
+
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(event)
+    local opts = { buffer = event.buf }
+
+    -- These are the "Big Three" you'll use constantly:
+    vim.keymap.set('n', 'K',  vim.lsp.buf.hover,           opts) -- Show documentation
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition,      opts) -- Go to definition
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references,      opts) -- Search all references
+
+    -- Useful for fixing errors:
+    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts) -- Code actions (fixes)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename,      opts) -- Rename variable everywhere
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { '<filetype>' },
+  callback = function() vim.treesitter.start() end,
+})
+
+vim.opt.termguicolors = true
