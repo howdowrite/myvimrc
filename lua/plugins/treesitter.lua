@@ -1,7 +1,14 @@
-
 return {
-  "nvim-treesitter/nvim-treesitter",
-  lazy = false,
-  build = ":TSUpdate",
-  opts = {},
+  "romus204/tree-sitter-manager.nvim",
+  dependencies = {}, -- tree-sitter CLI must be installed system-wide
+	opts = {
+	  ensure_installed = {
+			"lua",
+			"javascript",
+			"typescript",
+			"python",
+			"html",
+			"css",
+		}
+	},
 }
