@@ -1,13 +1,36 @@
 require("config.lazy")
 
-vim.opt.tabstop=4 -- how big should /t chars should be displayed
-vim.opt.shiftwidth=4 -- how big should >> be when used. Keep same size as above
-
-vim.opt.softtabstop=4
+vim.opt.tabstop=2 -- how big should /t chars should be displayed
+vim.opt.shiftwidth=2 -- how big should >> be when used. Keep same size as above
+vim.opt.softtabstop=2
 vim.opt.autoindent=true
-vim.opt.expandtab=false
+vim.opt.expandtab=true
 vim.opt.wrap=false
--- vim.cmd('colorscheme Habamax')
+vim.opt.smartindent = false
+vim.opt_local.indentexpr = ""
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
+  callback = function()
+    -- 1. KILL the Tree-sitter/Legacy indent engine
+    -- This stops the "jumps" and "snapping"
+    vim.opt_local.indentexpr = ""
+    
+    -- 2. Enable 'autoindent'
+    -- This is the "predictable" part: it just stays on the current level
+    vim.opt_local.autoindent = true
+    vim.opt_local.smartindent = false
+    
+    -- 3. Hard-set your 2-space rule
+    vim.opt_local.expandtab = true
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    
+    -- 4. Tell Neovim the indent is already handled
+    vim.b.did_indent = 1
+  end,
+})
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
