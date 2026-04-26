@@ -4,6 +4,7 @@ return {
     "mason-org/mason-lspconfig.nvim",
     event = "BufEnter",
     opts = {
+      automatic_enable = true,
       ensure_installed = {
         "vtsls",
         "typos_lsp",
